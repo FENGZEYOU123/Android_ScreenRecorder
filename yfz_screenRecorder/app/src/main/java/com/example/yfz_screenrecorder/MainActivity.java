@@ -80,7 +80,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
         //权限检查
 //        checkMyPermission();
         initData();  //初始化——数据
-        initData_play_meida();  //初始化--播放视频数据
+//        initData_play_meida();  //初始化--播放视频数据
         initRecycleView();        //初始化———recycleView
         EventBus.getDefault().register(this);  //注册eventbus广播，用于各个activity之间的通信
         IntentFilter receiver = new IntentFilter("update");//注册广播
@@ -94,10 +94,14 @@ public class MainActivity extends Activity implements View.OnClickListener{
 
         @Override
         public void onReceive(Context context, Intent intent) {
-                boolean iftrue=false;
-                if(iftrue=intent.getBooleanExtra("update",false)){
-                    Log.d("广播", "onReceive: 收到广播");
+                    String get=intent.getStringExtra("update");
+                if(get.equals("delete")){
+                    Log.d("广播", "onReceive: 收到广播 delete");
                     mAdapter.notifyDataSetChanged();
+                }
+                if(get.equals("play")){
+                    Log.d("广播", "onReceive: 收到广播 play");
+                    initData_play_meida();  //开始播放视频
                 }
         }
 

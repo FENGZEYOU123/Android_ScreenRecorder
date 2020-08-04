@@ -24,7 +24,7 @@ public class MyRecyclerView extends RecyclerView.Adapter<MyRecyclerView.ViewHold
     MainActivity MainActivity= new MainActivity();
     data Data = (data) MainActivity.context;
      private static String TAG= "MyRecyclerView:   ";
-
+    Intent aaa=new Intent("update");
         private List My_mLIst;
           MyRecyclerView(List list){
             My_mLIst=list;
@@ -48,7 +48,7 @@ public class MyRecyclerView extends RecyclerView.Adapter<MyRecyclerView.ViewHold
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             holder.list_item_textview.setText(""+My_mLIst.get(position));  //展示文件名字
-            holder.list_item_img.setOnClickListener(new play_button(position));  //添加点击事件，并将position的值传递进去
+            holder.list_item_img.setOnClickListener(new play_button(position,MainActivity.context));  //添加点击事件，并将position的值传递进去
             holder.list_item_img_delete.setOnClickListener(new delete_button(position,MainActivity.context));
         }
 
@@ -76,14 +76,20 @@ public class MyRecyclerView extends RecyclerView.Adapter<MyRecyclerView.ViewHold
         //处理播放点击事件
         public class play_button implements View.OnClickListener {
             int position;
+            Context context;
 
-            public play_button(int position) {
+            public play_button(int position,Context context) {
                 this.position = position;
+                this.context = context;
+
             }
             @Override
             public void onClick(View v) {
             Log.e("MyRecyclerView", "play_button点击:   "+position+"    "    +Data.getRootDir()+My_mLIst.get(position));
             MainActivity.surfaceView_layout.setVisibility(View.VISIBLE);
+
+                aaa.putExtra("update","play");
+                context.sendBroadcast(aaa);
              }
         }
 
@@ -105,8 +111,8 @@ public class MyRecyclerView extends RecyclerView.Adapter<MyRecyclerView.ViewHold
             file.delete();
             MainActivity.mList.remove(position);
             //发送广播通知更新recycleview的ui
-            Intent aaa=new Intent("update");
-            aaa.putExtra("update",true);
+
+            aaa.putExtra("update","delete");
             context.sendBroadcast(aaa);
 
             }
