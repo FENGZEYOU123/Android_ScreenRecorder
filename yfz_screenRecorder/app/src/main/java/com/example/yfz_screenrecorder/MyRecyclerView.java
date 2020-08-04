@@ -1,18 +1,15 @@
 package com.example.yfz_screenrecorder;
 
-import android.app.Activity;
-import android.app.MediaRouteButton;
+import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.File;
@@ -25,7 +22,7 @@ import java.util.List;
  **/
 public class MyRecyclerView extends RecyclerView.Adapter<MyRecyclerView.ViewHolder>{     //extends recyclerview.adapter
     MainActivity MainActivity= new MainActivity();
-    Data Data = (Data) MainActivity.context;
+    data Data = (data) MainActivity.context;
      private static String TAG= "MyRecyclerView:   ";
 
         private List My_mLIst;
@@ -52,7 +49,7 @@ public class MyRecyclerView extends RecyclerView.Adapter<MyRecyclerView.ViewHold
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             holder.list_item_textview.setText(""+My_mLIst.get(position));  //展示文件名字
             holder.list_item_img.setOnClickListener(new play_button(position));  //添加点击事件，并将position的值传递进去
-            holder.list_item_img_delete.setOnClickListener(new delete_button(position));
+            holder.list_item_img_delete.setOnClickListener(new delete_button(position,MainActivity.context));
         }
 
         //获取数据源总的条数
@@ -93,9 +90,12 @@ public class MyRecyclerView extends RecyclerView.Adapter<MyRecyclerView.ViewHold
         //处理删除点击事件
     public class delete_button implements View.OnClickListener {
         int position;
+        Context context;
 
-        public delete_button(int position) {
+        public delete_button(int position,Context context) {
             this.position = position;
+            this.context = context;
+
         }
         @Override
         public void onClick(View v) {
@@ -104,8 +104,10 @@ public class MyRecyclerView extends RecyclerView.Adapter<MyRecyclerView.ViewHold
             File file= new File(file_path);
             file.delete();
             MainActivity.mList.remove(position);
-//            MainActivity.mAdapter = new MyRecyclerView(MainActivity.mList);
-            MainActivity.mAdapter.notifyDataSetChanged();
+            //发送广播通知更新recycleview的ui
+            Intent aaa=new Intent("update");
+            aaa.putExtra("update",true);
+            context.sendBroadcast(aaa);
 
             }
     }

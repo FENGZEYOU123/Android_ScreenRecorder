@@ -25,7 +25,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'org.greenrobot:eventbus:3.1.1'
+    implementation 'org.greenrobot:eventbus:3.2.0'
 
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'com.android.support:recyclerview-v7:29.0.0'

@@ -1,5 +1,8 @@
 package com.example.yfz_screenrecorder;
 
+import android.content.Context;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
@@ -51,6 +54,25 @@ public class scan_file extends MainActivity {
             return files_name;
 
         }
+
+    }
+
+
+    /**
+     * 将刚保存好的录像视频，刷新同步更新到系统相册中，可以使用户在"相册"里立刻就可以看到
+     *
+     **/
+
+    public static void  update_scanFIle(Context context, String path) {
+        MediaScannerConnection.scanFile(context,
+                new String[]{path},
+                new String[]{"image","video"},
+                new MediaScannerConnection.OnScanCompletedListener() {
+                    @Override
+                    public void onScanCompleted(String path, Uri uri) {
+                        Log.d("同步更新", "扫描系统相册图库完成:  "+path);
+                    }
+                });
 
     }
 }

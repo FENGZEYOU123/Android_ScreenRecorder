@@ -23,7 +23,7 @@ public class ScreenRecordService extends Service {
     private MediaProjection mediaProjection;
     private MediaRecorder mediaRecorder;
     private VirtualDisplay virtualDisplay;
-
+    data data = (data) MainActivity.context;  //全局变量
     private boolean running;
     private int width = 720;
     private int height = 1080;
@@ -138,6 +138,9 @@ public class ScreenRecordService extends Service {
         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
         //设置视频储存地址
         videoPath = getSaveDirectory() + System.currentTimeMillis() + ".mp4";
+        data.setFull_file_Dir(videoPath);  //保存完整路径
+        data.setFile_name(System.currentTimeMillis() + ".mp4");//保存名字
+
         mediaRecorder.setOutputFile(videoPath);
         //设置视频大小
         mediaRecorder.setVideoSize(720, 1080);
