@@ -4,6 +4,7 @@ package com.example.yfz_screenrecorder;
 import android.Manifest;
 import android.app.Activity;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
@@ -11,6 +12,7 @@ import android.media.projection.MediaProjection;
 import android.media.projection.MediaProjectionManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.IBinder;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -21,25 +23,35 @@ import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import java.io.File;
+
 public class MainActivity extends Activity implements View.OnClickListener{
 
-    private Button sb;
+    private Button button_1;
     private ScreenRecordService screenRecordService;
     private MediaProjectionManager mediaProjectionManager;
     private MediaProjection mediaProjection;
     private DisplayMetrics metrics;
     private static final int RECORD_REQUEST_CODE = 101;
+    public static Context context;
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         metrics = new DisplayMetrics();
+        context=getApplicationContext();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        sb = (Button) findViewById(R.id.sb);
-        sb.setOnClickListener(this);
+        button_1 = (Button) findViewById(R.id.button_1);
+        button_1.setOnClickListener(this);
         //权限检查
-        checkMyPermission();
+//        checkMyPermission();
+        scan_file scan_file= new scan_file();
+        String rootDir = Environment.getExternalStorageDirectory()
+                .getAbsolutePath() + "/" + "yfz_screenrecorder/" + "/";
+        File file = new File(rootDir);
+        scan_file.scan_Files(file);
     }
 
     @Override
@@ -80,7 +92,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
         public void onServiceConnected(ComponentName name, IBinder service) {
             ScreenRecordService.ScreenRecordBinder binder = (ScreenRecordService.ScreenRecordBinder) service;
             screenRecordService = binder.getScreenRecordService();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {  //大于等于5.1版本的安卓需要获取截屏权限
                 mediaProjectionManager = (MediaProjectionManager) getSystemService(MEDIA_PROJECTION_SERVICE);
             }
             //开启录屏请求intent
@@ -116,20 +128,20 @@ public class MainActivity extends Activity implements View.OnClickListener{
     public void onClick(View v) {
         switch (v.getId()){
 
-            case R.id.sb:
+            case R.id.button_1:
 
                 if (screenRecordService != null && !screenRecordService.isRunning()) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         screenRecordService.startRecord();
                     }
                     Toast.makeText(MainActivity.this,"开始录屏",Toast.LENGTH_SHORT).show();
-                    sb.setText("结束录屏");
+                    button_1.setText("结束录屏");
                     setToBackground();
                 }else if (screenRecordService != null && screenRecordService.isRunning()) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                         screenRecordService.stopRecord();
                     }
-                    sb.setText("开始录屏");
+                    button_1.setText("开始录屏");
                 } else if (screenRecordService == null) {
                     connectService();
                 }

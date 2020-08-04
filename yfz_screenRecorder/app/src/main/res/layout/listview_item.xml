@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#FBB68F"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/outside_listview"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        tools:ignore="MissingConstraints">
+
+        <ImageButton
+            android:id="@+id/list_item_img"
+            android:layout_width="40dp"
+            android:layout_marginLeft="10dp"
+            app:layout_constraintLeft_toLeftOf="@+id/outside_listview"
+            app:layout_constraintTop_toTopOf="@id/outside_listview"
+            app:layout_constraintBottom_toBottomOf="@id/outside_listview"
+            android:background="@drawable/listview_item_background"
+            android:layout_height="40dp">
+        </ImageButton>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            app:layout_constraintLeft_toRightOf="@id/list_item_img"
+            android:layout_marginLeft="20dp"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/list_item_textview"
+                android:layout_width="wrap_content"
+                android:textSize="20dp"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:text="dasdoasjsdsdoasj"
+                android:layout_height="match_parent">
+            </TextView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

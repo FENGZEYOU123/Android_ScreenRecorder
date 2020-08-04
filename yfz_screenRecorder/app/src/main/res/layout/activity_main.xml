@@ -15,11 +15,11 @@
         android:layout_marginBottom="40dp"
         android:background="#FFF2DE"
         tools:ignore="MissingConstraints">
-        <ListView
+        <ios_animation.ios_listview
             android:id="@+id/lv_local_video_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-        </ListView>
+        </ios_animation.ios_listview>
 
 
 
@@ -35,7 +35,7 @@
         tools:ignore="MissingConstraints">
 
         <Button
-            android:id="@+id/sb"
+            android:id="@+id/button_1"
             android:layout_width="wrap_content"
             android:elevation="5dp"
             android:textColor="#FFFFFF"

@@ -159,7 +159,7 @@ public class ScreenRecordService extends Service {
     public String getSaveDirectory() {
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             String rootDir = Environment.getExternalStorageDirectory()
-                    .getAbsolutePath() + "/" + "手机录屏助手/" + "/";
+                    .getAbsolutePath() + "/" + "yfz_screenrecorder/" + "/";
             File file = new File(rootDir);
             if (!file.exists()) {
                 if (!file.mkdirs()) {
