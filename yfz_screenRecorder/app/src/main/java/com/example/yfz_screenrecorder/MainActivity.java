@@ -48,10 +48,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
         //权限检查
 //        checkMyPermission();
         scan_file scan_file= new scan_file();
-        String rootDir = Environment.getExternalStorageDirectory()
-                .getAbsolutePath() + "/" + "yfz_screenrecorder/" + "/";
-        File file = new File(rootDir);
-        scan_file.scan_Files(file);
+        scan_file.scan_Files();
     }
 
     @Override

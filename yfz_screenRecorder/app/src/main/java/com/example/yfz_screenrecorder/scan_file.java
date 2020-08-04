@@ -15,7 +15,11 @@ public class scan_file extends MainActivity {
 
     ArrayList<String> files_name= new ArrayList<>();
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public  ArrayList<String> scan_Files(File file){
+    public  ArrayList<String> scan_Files(){
+        String rootDir = Environment.getExternalStorageDirectory()
+                .getAbsolutePath() + "/" + "yfz_screenrecorder/" + "/";
+        File file = new File(rootDir);
+
         Log.e("遍历", "扫描文件路径为>>>>>> "+file);
 
 

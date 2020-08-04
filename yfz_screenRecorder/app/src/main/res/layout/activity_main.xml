@@ -15,11 +15,11 @@
         android:layout_marginBottom="40dp"
         android:background="#FFF2DE"
         tools:ignore="MissingConstraints">
-        <ios_animation.ios_listview
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/lv_local_video_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-        </ios_animation.ios_listview>
+        </androidx.recyclerview.widget.RecyclerView>
 
 
 
