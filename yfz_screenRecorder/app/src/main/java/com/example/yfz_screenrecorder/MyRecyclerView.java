@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -27,9 +28,9 @@ public class MyRecyclerView extends RecyclerView.Adapter<MyRecyclerView.ViewHold
     Data Data = (Data) MainActivity.context;
      private static String TAG= "MyRecyclerView:   ";
 
-        private List mLIst;
+        private List My_mLIst;
           MyRecyclerView(List list){
-            mLIst=list;
+            My_mLIst=list;
         }
 
 
@@ -49,47 +50,89 @@ public class MyRecyclerView extends RecyclerView.Adapter<MyRecyclerView.ViewHold
         //通过方法提供的ViewHolder，将数据绑定到ViewHolder中
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            holder.list_item_textview.setText(""+mLIst.get(position));  //展示文件名字
-            holder.list_item_img.setOnClickListener(new img_button(position));  //添加点击事件，并将position的值传递进去
+            holder.list_item_textview.setText(""+My_mLIst.get(position));  //展示文件名字
+            holder.list_item_img.setOnClickListener(new play_button(position));  //添加点击事件，并将position的值传递进去
+            holder.list_item_img_delete.setOnClickListener(new delete_button(position));
         }
 
         //获取数据源总的条数
         @Override
         public int getItemCount() {
-            return mLIst.size();
+            return My_mLIst.size();
         }
 
         //创建ViewHolder并返回，后续item布局里控件都是从ViewHolder中取出
 
         public class ViewHolder extends RecyclerView.ViewHolder {
-            ImageButton list_item_img;
+            ImageButton list_item_img,list_item_img_delete;
             TextView list_item_textview,list_item_img_textview;
 
             public ViewHolder(@NonNull View itemView) {
                 super(itemView);
                 list_item_img=   itemView.findViewById(R.id.list_item_img);
+                list_item_img_delete=itemView.findViewById(R.id.list_item_img_delete);
                 list_item_img_textview=itemView.findViewById(R.id.list_item_img_textview);
                 list_item_textview= itemView.findViewById(R.id.list_item_textview);
             }
         }
 
-        //处理点击事件
-        public class img_button implements View.OnClickListener {
+        //处理播放点击事件
+        public class play_button implements View.OnClickListener {
             int position;
 
-            public img_button(int position) {
+            public play_button(int position) {
                 this.position = position;
             }
-
             @Override
             public void onClick(View v) {
-            Log.e("MyRecyclerView", "点击: "    +Data.getRootDir()+mLIst.get(position));
+            Log.e("MyRecyclerView", "play_button点击:   "+position+"    "    +Data.getRootDir()+My_mLIst.get(position));
             MainActivity.surfaceView_layout.setVisibility(View.VISIBLE);
              }
         }
 
+        //处理删除点击事件
+    public class delete_button implements View.OnClickListener {
+        int position;
+
+        public delete_button(int position) {
+            this.position = position;
+        }
+        @Override
+        public void onClick(View v) {
+            String file_path=Data.getRootDir()+My_mLIst.get(position);
+            Log.e("MyRecyclerView", "delete_button点击: "  +position+"    "+file_path);
+            File file= new File(file_path);
+            file.delete();
+            MainActivity.mList.remove(position);
+//            MainActivity.mAdapter = new MyRecyclerView(MainActivity.mList);
+            MainActivity.mAdapter.notifyDataSetChanged();
+
+            }
+    }
 
 
+
+
+    private  boolean  deleteFiles(File file){
+        try{
+            if(file.isDirectory()){ //判断是否是文件夹
+                File[] files = file.listFiles();//遍历文件夹里面的所有的
+                for(int i=0;i<files.length;i++){
+                    Log.e(TAG, "删除文件>>>>>> "+files[i].toString());
+                    deleteFiles(files[i]); //删除
+                }
+            }else{
+                file.delete();
+            }
+            System.gc();//系统回收垃圾
+            return true;
+        }catch (Exception e){
+            Log.e(TAG, "删除报错！！！: "+e.toString());
+            return false;
+
+        }
+
+    }
 
 
     }

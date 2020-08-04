@@ -45,7 +45,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
 
     //recycleview
     public RecyclerView lv_local_video_list;
-    private MyRecyclerView mAdapter;//适配器
+    public MyRecyclerView mAdapter;//适配器
     private LinearLayoutManager mLinearLayoutManager;//布局管理器
     public static  List mList;
     //recycleview
@@ -85,6 +85,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
         lv_local_video_list.setLayoutManager(mLinearLayoutManager);
         //设置适配器adapter
         lv_local_video_list.setAdapter(mAdapter);
+
 
         //************************recycleView
 
