@@ -8,7 +8,7 @@
 
 
    <androidx.constraintlayout.widget.ConstraintLayout
-       android:visibility="gone"
+
        android:id="@+id/surfaceView_layout"
        android:layout_width="match_parent"
        app:layout_constraintTop_toTopOf="parent"
