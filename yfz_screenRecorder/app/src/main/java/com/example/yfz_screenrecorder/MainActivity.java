@@ -16,14 +16,21 @@ import android.os.Environment;
 import android.os.IBinder;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends Activity implements View.OnClickListener{
 
@@ -34,6 +41,14 @@ public class MainActivity extends Activity implements View.OnClickListener{
     private DisplayMetrics metrics;
     private static final int RECORD_REQUEST_CODE = 101;
     public static Context context;
+    public static ConstraintLayout surfaceView_layout;
+
+    //recycleview
+    public RecyclerView lv_local_video_list;
+    private MyRecyclerView mAdapter;//适配器
+    private LinearLayoutManager mLinearLayoutManager;//布局管理器
+    public static  List mList;
+    //recycleview
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -41,15 +56,46 @@ public class MainActivity extends Activity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         metrics = new DisplayMetrics();
-        context=getApplicationContext();
+        context=getApplication();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         button_1 = (Button) findViewById(R.id.button_1);
         button_1.setOnClickListener(this);
+        surfaceView_layout=findViewById(R.id.surfaceView_layout);
         //权限检查
-//        checkMyPermission();
+        Data Data = (Data) this.getApplicationContext();
         scan_file scan_file= new scan_file();
-        scan_file.scan_Files();
+        String rootDir = Environment.getExternalStorageDirectory()
+                .getAbsolutePath() + "/" + "yfz_screenrecorder/";
+        Data.setRootDir(rootDir);
+        File file = new File(rootDir);
+        checkMyPermission();
+
+
+        //************************recycleView
+        lv_local_video_list=findViewById(R.id.lv_local_video_list);
+        mList =  new ArrayList<String>();
+        scan_file.scan_Files(file);
+
+        //创建布局管理器，垂直设置LinearLayoutManager.VERTICAL，水平设置LinearLayoutManager.HORIZONTAL
+        mLinearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        //创建适配器，将数据传递给适配器
+
+        mAdapter = new MyRecyclerView(mList);
+        //设置布局管理器
+        lv_local_video_list.setLayoutManager(mLinearLayoutManager);
+        //设置适配器adapter
+        lv_local_video_list.setAdapter(mAdapter);
+
+        //************************recycleView
+
     }
+    public void initData(List list) {
+        for (int i = 1; i <= 40; i++) {
+            list.add("第" + i + "条数据");
+        }
+    }
+
+
 
     @Override
     protected void onDestroy() {
@@ -128,6 +174,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
             case R.id.button_1:
 
                 if (screenRecordService != null && !screenRecordService.isRunning()) {
+
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         screenRecordService.startRecord();
                     }

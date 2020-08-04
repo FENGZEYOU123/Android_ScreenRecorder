@@ -7,12 +7,27 @@
     tools:context=".MainActivity">
 
 
+   <androidx.constraintlayout.widget.ConstraintLayout
+       android:visibility="gone"
+       android:id="@+id/surfaceView_layout"
+       android:layout_width="match_parent"
+       app:layout_constraintTop_toTopOf="parent"
+       android:layout_height="400dp"
+       tools:ignore="MissingConstraints">
+       <SurfaceView
+           android:id="@+id/surfaceView"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           tools:ignore="MissingConstraints">
+       </SurfaceView>
+   </androidx.constraintlayout.widget.ConstraintLayout>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/surfaceView_layout"
         app:layout_constraintBottom_toTopOf="@+id/bottom_layout"
-        android:layout_marginBottom="40dp"
+
         android:background="#FFF2DE"
         tools:ignore="MissingConstraints">
         <androidx.recyclerview.widget.RecyclerView

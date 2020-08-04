@@ -15,13 +15,9 @@ public class scan_file extends MainActivity {
 
     ArrayList<String> files_name= new ArrayList<>();
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public  ArrayList<String> scan_Files(){
-        String rootDir = Environment.getExternalStorageDirectory()
-                .getAbsolutePath() + "/" + "yfz_screenrecorder/" + "/";
-        File file = new File(rootDir);
+    public  ArrayList<String> scan_Files(File file){
 
         Log.e("遍历", "扫描文件路径为>>>>>> "+file);
-
 
         try{
             if(file.isDirectory()){ //判断是否是文件夹
@@ -39,7 +35,7 @@ public class scan_file extends MainActivity {
                       if(file_name_index>0){
                      file_name= file_name.substring(file_name_index+pcg_name.length()+1);  //只保留文件名
                       }
-                    files_name.add(file_name);
+                    MainActivity.mList.add(file_name);
                 }
             }
             System.gc();//系统回收垃圾
