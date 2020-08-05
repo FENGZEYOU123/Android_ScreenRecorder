@@ -67,6 +67,14 @@
             android:text="开始录屏"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <ios_animation.FreeView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:src="@drawable/listview_item_delete"
+        tools:ignore="MissingConstraints">
+
+    </ios_animation.FreeView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
