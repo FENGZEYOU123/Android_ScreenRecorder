@@ -89,6 +89,7 @@ public class MyRecyclerView extends RecyclerView.Adapter<MyRecyclerView.ViewHold
             MainActivity.surfaceView_layout.setVisibility(View.VISIBLE);
 
                 aaa.putExtra("update","play");
+                aaa.putExtra("play_file_name",Data.getRootDir()+My_mLIst.get(position));
                 context.sendBroadcast(aaa);
              }
         }

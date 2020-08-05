@@ -11,6 +11,8 @@ import android.os.Build;
 import android.os.Environment;
 import android.os.HandlerThread;
 import android.os.IBinder;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
@@ -24,6 +26,7 @@ public class ScreenRecordService extends Service {
     private MediaRecorder mediaRecorder;
     private VirtualDisplay virtualDisplay;
     data data = (data) MainActivity.context;  //全局变量
+    private DisplayMetrics dm= new DisplayMetrics();
     private boolean running;
     private int width = 720;
     private int height = 1080;
@@ -37,6 +40,8 @@ public class ScreenRecordService extends Service {
         HandlerThread serviceThread = new HandlerThread("service_thread", android.os.Process.THREAD_PRIORITY_BACKGROUND);
         serviceThread.start();
         running = false;
+
+
     }
 
     public class ScreenRecordBinder extends Binder {
@@ -112,6 +117,7 @@ public class ScreenRecordService extends Service {
         }catch (Exception e){
             e.printStackTrace();
             Toast.makeText(ScreenRecordService.this, "录屏出错,保存失败", Toast.LENGTH_SHORT).show();
+            Log.e("报错", "stopRecord: "+e.toString() );
             return false;
         }
         Toast.makeText(ScreenRecordService.this, "录屏完成，已保存。", Toast.LENGTH_SHORT).show();
@@ -131,11 +137,11 @@ public class ScreenRecordService extends Service {
     private void initRecorder() {
         mediaRecorder = new MediaRecorder();
         //设置声音来源
-//        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+//        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
         //设置视频来源
         mediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);
         //设置视频格式
-        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);  //mp4视频输出格式
         //设置视频储存地址
         videoPath = getSaveDirectory() + System.currentTimeMillis() + ".mp4";
         data.setFull_file_Dir(videoPath);  //保存完整路径
@@ -143,14 +149,21 @@ public class ScreenRecordService extends Service {
 
         mediaRecorder.setOutputFile(videoPath);
         //设置视频大小
-        mediaRecorder.setVideoSize(720, 1080);
+        dm = MainActivity.context.getResources().getDisplayMetrics();
         //设置视频编码
-        mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
+        mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264); //mp4视频输出格式
         //设置声音编码
-//        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+//        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB); //mp4视频输出格式
         //视频码率
         mediaRecorder.setVideoEncodingBitRate(2 * 1920 * 1080);
-        mediaRecorder.setVideoFrameRate(18);
+
+        int dm_W= dm.widthPixels;  //   设备的绝对宽度
+        int dm_H= Integer.valueOf(dm.heightPixels);//    设备的绝对长度
+        mediaRecorder.setVideoSize(720,1400);
+        Log.d("屏幕尺寸为", "initRecorder: "+"  "+dm_W+"     "+dm_H);
+
+
+        mediaRecorder.setVideoFrameRate(30);
         try {
             mediaRecorder.prepare();
         } catch (IOException e) {

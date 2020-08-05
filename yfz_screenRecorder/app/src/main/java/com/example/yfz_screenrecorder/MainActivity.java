@@ -86,7 +86,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
         IntentFilter receiver = new IntentFilter("update");//注册广播
         registerReceiver(receiver_run,receiver);
 
-
+//        initData_play_meida();
     }
 
 
@@ -101,7 +101,8 @@ public class MainActivity extends Activity implements View.OnClickListener{
                 }
                 if(get.equals("play")){
                     Log.d("广播", "onReceive: 收到广播 play");
-                    initData_play_meida();  //开始播放视频
+                    String play_file_name = intent.getStringExtra("play_file_name");
+                    initData_play_meida(play_file_name);  //开始播放视频
                 }
         }
 
@@ -143,26 +144,32 @@ public class MainActivity extends Activity implements View.OnClickListener{
 
 
 
-    private void initData_play_meida(){  //初始化播放视频数据
+    private void initData_play_meida(String play_file_name){  //初始化播放视频数据
         mSurfaceView=findViewById(R.id.surfaceView);
         mMediaPlayer = new MediaPlayer();
         mHolder = mSurfaceView.getHolder(); //拿到surfaceview的holder
         mHolder.setKeepScreenOn(true);  //屏幕保持常亮
+        readyPlay(play_file_name);
 
         mHolder.addCallback(new SurfaceHolder.Callback() {  //callback
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
+                Log.e("播放", "surfaceCreated: ");
                 //开始播放
-                readyPlay();
+              //https://blog.csdn.net/qq137464739/article/details/84547944?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-2.channel_param&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-2.channel_param
+
+//                readyPlay();
             }
 
             @Override
             public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+                Log.e("播放", "surfaceChanged: ");
 
             }
 
             @Override
             public void surfaceDestroyed(SurfaceHolder holder) {
+                Log.e("播放", "surfaceDestroyed: ");
 
             }
         });
@@ -206,12 +213,13 @@ public class MainActivity extends Activity implements View.OnClickListener{
 
 
     //准好播放了
-    public void readyPlay() {
+    public void readyPlay(String play_file_name) {
 //        String url = "http://res.cloudinary.com/liuyuesha/video/upload/v1475978853/广告_bl4dbp.mp4";
         mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         try {
-            mMediaPlayer.setDataSource("/storage/emulated/0/yfz_screenrecorder//1596533524810.mp4");
-//            mMediaPlayer.setDataSource(this, url);
+//            mMediaPlayer.setDataSource(this, Uri.parse(url));
+                        mMediaPlayer.setDataSource(play_file_name);
+
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -229,11 +237,12 @@ public class MainActivity extends Activity implements View.OnClickListener{
                 play();
             }
         });
+
     }
-    /**
-     * 播放或者暂停
-     */
-    private void play() {
+        /**
+         * 播放或者暂停
+         */
+    private void play(){
         if (mMediaPlayer != null) {
             if (mMediaPlayer.isPlaying()) {
                 mMediaPlayer.pause();
