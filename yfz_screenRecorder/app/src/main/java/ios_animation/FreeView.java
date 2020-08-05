@@ -3,7 +3,10 @@ package ios_animation;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewParent;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -102,7 +105,7 @@ public class FreeView extends ConstraintLayout {
                             b= maxHeight;
                             t=b-height;
                         }
-                        this.layout(l, t, r, b); // 重置view在layout 中位置
+                        this.setRelativeViewLocation(this,l, t, r, b); // 重置view在layout 中位置
                         isDrag=true;  // 重置 拖动为 true
                     }else {
                         isDrag=false; // 小于峰值3时 为点击事件
@@ -118,5 +121,19 @@ public class FreeView extends ConstraintLayout {
             return true;
         }
         return false;
+    }
+
+    private void setRelativeViewLocation(View view, int left, int top, int right, int bottom) {  //防止刷新布局，组件回到原来位置
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(right - left, bottom - top);
+        params.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
+        params.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
+        params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
+        params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
+        ViewParent parent = view.getParent();
+        View p = (View) parent;
+        int marginRight = p.getWidth() - right;
+        int marginBottom = p.getHeight() - bottom;
+        params.setMargins(left, top, marginRight, marginBottom);
+        view.setLayoutParams(params);
     }
 }
