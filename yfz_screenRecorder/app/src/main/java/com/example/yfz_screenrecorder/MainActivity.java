@@ -214,13 +214,9 @@ public class MainActivity extends Activity implements View.OnClickListener{
 
     //准好播放了
     public void readyPlay(String play_file_name) {
-//        String url = "http://res.cloudinary.com/liuyuesha/video/upload/v1475978853/广告_bl4dbp.mp4";
         mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         try {
-//            mMediaPlayer.setDataSource(this, Uri.parse(url));
-                        mMediaPlayer.setDataSource(play_file_name);
-
-
+            mMediaPlayer.setDataSource(play_file_name);  //设置视频输出涞源
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -233,6 +229,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
         mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
+                Log.d("点击", "onPrepared: ");
                 //装载完毕回调
                 play();
             }

@@ -137,11 +137,11 @@ public class ScreenRecordService extends Service {
     private void initRecorder() {
         mediaRecorder = new MediaRecorder();
         //设置声音来源
-//        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
+//        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         //设置视频来源
         mediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);
         //设置视频格式
-        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);  //mp4视频输出格式
+        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
         //设置视频储存地址
         videoPath = getSaveDirectory() + System.currentTimeMillis() + ".mp4";
         data.setFull_file_Dir(videoPath);  //保存完整路径
@@ -150,20 +150,26 @@ public class ScreenRecordService extends Service {
         mediaRecorder.setOutputFile(videoPath);
         //设置视频大小
         dm = MainActivity.context.getResources().getDisplayMetrics();
-        //设置视频编码
-        mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264); //mp4视频输出格式
-        //设置声音编码
-//        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB); //mp4视频输出格式
-        //视频码率
-        mediaRecorder.setVideoEncodingBitRate(2 * 1920 * 1080);
 
         int dm_W= dm.widthPixels;  //   设备的绝对宽度
-        int dm_H= Integer.valueOf(dm.heightPixels);//    设备的绝对长度
-        mediaRecorder.setVideoSize(720,1400);
-        Log.d("屏幕尺寸为", "initRecorder: "+"  "+dm_W+"     "+dm_H);
+        int dm_H= dm.heightPixels;//    设备的绝对长度
 
+        try{
 
-        mediaRecorder.setVideoFrameRate(30);
+            mediaRecorder.setVideoSize(720, 1080);
+            Log.d("屏幕尺寸为", "initRecorder: "+"  "+dm_W+"     "+dm_H);
+        }catch (Exception e){
+            Log.e("屏幕尺寸为", "报错！！"+e.toString());
+
+        }
+
+        //设置视频编码
+        mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
+        //设置声音编码
+//        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+        //视频码率
+        mediaRecorder.setVideoEncodingBitRate(2 * 1920 * 1080);
+        mediaRecorder.setVideoFrameRate(60);
         try {
             mediaRecorder.prepare();
         } catch (IOException e) {
