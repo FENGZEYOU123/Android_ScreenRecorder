@@ -80,13 +80,11 @@ public class MainActivity extends Activity implements View.OnClickListener{
         //权限检查
 //        checkMyPermission();
         initData();  //初始化——数据
-//        initData_play_meida();  //初始化--播放视频数据
         initRecycleView();        //初始化———recycleView
         EventBus.getDefault().register(this);  //注册eventbus广播，用于各个activity之间的通信
         IntentFilter receiver = new IntentFilter("update");//注册广播
         registerReceiver(receiver_run,receiver);
-
-//        initData_play_meida();
+//https://blog.csdn.net/kururunga/article/details/82017665  集成弹性recycleview
     }
 
 

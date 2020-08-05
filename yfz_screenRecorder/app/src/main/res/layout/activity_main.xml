@@ -8,7 +8,7 @@
 
 
    <androidx.constraintlayout.widget.ConstraintLayout
-
+       android:visibility="gone"
        android:id="@+id/surfaceView_layout"
        android:layout_width="match_parent"
        app:layout_constraintTop_toTopOf="parent"
@@ -27,14 +27,17 @@
         android:layout_height="0dp"
         app:layout_constraintTop_toBottomOf="@+id/surfaceView_layout"
         app:layout_constraintBottom_toTopOf="@+id/bottom_layout"
-
         android:background="#FFF2DE"
         tools:ignore="MissingConstraints">
-        <androidx.recyclerview.widget.RecyclerView
+        <com.lzy.widget.OverScrollDecor
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <com.lzy.widget.vertical.VerticalRecyclerView
             android:id="@+id/lv_local_video_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-        </androidx.recyclerview.widget.RecyclerView>
+        </com.lzy.widget.vertical.VerticalRecyclerView>
+        </com.lzy.widget.OverScrollDecor>
 
 
 
