@@ -5,7 +5,9 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.ImageView;
 
-public class FreeView extends androidx.appcompat.widget.AppCompatImageView {
+import androidx.constraintlayout.widget.ConstraintLayout;
+
+public class FreeView extends ConstraintLayout {
 
     private int width; //  测量宽度 FreeView的宽度
     private int height; // 测量高度 FreeView的高度
