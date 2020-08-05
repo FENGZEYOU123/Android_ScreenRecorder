@@ -40,7 +40,7 @@ public class FreeView extends ConstraintLayout {
         width=getMeasuredWidth();
         height=getMeasuredHeight();
         maxWidth = UiUtil.getMaxWidth(context);
-        maxHeight = UiUtil.getMaxHeight(context)-getStatusBarHeight();// 此时减去状态栏高度 注意如果有状态栏 要减去状态栏 如下行 得到的是可活动的高度
+        maxHeight = UiUtil.getMaxHeight(context);// 此时减去状态栏高度 注意如果有状态栏 要减去状态栏 如下行 得到的是可活动的高度
         //maxHeight = UiUtil.getMaxHeight(context)-getStatusBarHeight() - getNavigationBarHeight();
     }
     // 获取状态栏高度
