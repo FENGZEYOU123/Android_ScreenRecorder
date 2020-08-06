@@ -11,6 +11,8 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.projection.MediaProjection;
@@ -68,6 +70,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
     private scan_file scan_file;
     private data data;
     private File file;
+    private RelativeLayout mParent;
 
     //recycleview
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -78,7 +81,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
         setContentView(R.layout.activity_main);
 
         //权限检查
-//        checkMyPermission();
+        checkMyPermission();
         initData();  //初始化——数据
         initRecycleView();        //初始化———recycleView
         EventBus.getDefault().register(this);  //注册eventbus广播，用于各个activity之间的通信
@@ -96,6 +99,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
                 if(get.equals("delete")){
                     Log.d("广播", "onReceive: 收到广播 delete");
                     mAdapter.notifyDataSetChanged();
+                    play("delete");
                 }
                 if(get.equals("play")){
                     Log.d("广播", "onReceive: 收到广播 play");
@@ -123,6 +127,10 @@ public class MainActivity extends Activity implements View.OnClickListener{
         button_1 = (Button) findViewById(R.id.button_1);
         button_1.setOnClickListener(this);
         surfaceView_layout=findViewById(R.id.surfaceView_layout);
+
+
+        mParent = findViewById(R.id.test_parent_play);
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -175,39 +183,39 @@ public class MainActivity extends Activity implements View.OnClickListener{
         mMediaPlayer.setOnVideoSizeChangedListener(new MediaPlayer.OnVideoSizeChangedListener() {
             @Override
             public void onVideoSizeChanged(MediaPlayer mp, int width, int height) {
-//                changeVideoSize();
+                changeVideoSize();
             }
         });
 
     }
 
 //
-//    public void changeVideoSize() {
-//        int videoWidth = mMediaPlayer.getVideoWidth();
-//        int videoHeight = mMediaPlayer.getVideoHeight();
-//
-//        int surfaceWidth = mSurfaceView.getWidth();
-//        int surfaceHeight = mSurfaceView.getHeight();
-//
-//        //根据视频尺寸去计算->视频可以在sufaceView中放大的最大倍数。
-//        float max;
-//        if (getResources().getConfiguration().orientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
-//            //竖屏模式下按视频宽度计算放大倍数值
-//            max = Math.max((float) videoWidth / (float) surfaceWidth, (float) videoHeight / (float) surfaceHeight);
-//        } else {
-//            //横屏模式下按视频高度计算放大倍数值
-//            max = Math.max(((float) videoWidth / (float) surfaceHeight), (float) videoHeight / (float) surfaceWidth);
-//        }
-//
-//        //视频宽高分别/最大倍数值 计算出放大后的视频尺寸
-//        videoWidth = (int) Math.ceil((float) videoWidth / max);
-//        videoHeight = (int) Math.ceil((float) videoHeight / max);
-//
-//        //无法直接设置视频尺寸，将计算出的视频尺寸设置到surfaceView 让视频自动填充。
-//        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(videoWidth, videoHeight);
-//        params.addRule(RelativeLayout.CENTER_VERTICAL, mParent.getId());
-//        mSurfaceView.setLayoutParams(params);
-//    }
+    public void changeVideoSize() {
+        int videoWidth = mMediaPlayer.getVideoWidth();
+        int videoHeight = mMediaPlayer.getVideoHeight();
+
+        int surfaceWidth = mSurfaceView.getWidth();
+        int surfaceHeight = mSurfaceView.getHeight();
+
+        //根据视频尺寸去计算->视频可以在sufaceView中放大的最大倍数。
+        float max;
+        if (getResources().getConfiguration().orientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
+            //竖屏模式下按视频宽度计算放大倍数值
+            max = Math.max((float) videoWidth / (float) surfaceWidth, (float) videoHeight / (float) surfaceHeight);
+        } else {
+            //横屏模式下按视频高度计算放大倍数值
+            max = Math.max(((float) videoWidth / (float) surfaceHeight), (float) videoHeight / (float) surfaceWidth);
+        }
+
+        //视频宽高分别/最大倍数值 计算出放大后的视频尺寸
+        videoWidth = (int) Math.ceil((float) videoWidth / max);
+        videoHeight = (int) Math.ceil((float) videoHeight / max);
+
+        //无法直接设置视频尺寸，将计算出的视频尺寸设置到surfaceView 让视频自动填充。
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(videoWidth, videoHeight);
+        params.addRule(RelativeLayout.CENTER_VERTICAL, mParent.getId());
+        mSurfaceView.setLayoutParams(params);
+    }
 
 
     //准好播放了
@@ -218,7 +226,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
         } catch (Exception e) {
             e.printStackTrace();
         }
-        mMediaPlayer.setLooping(true);
+        mMediaPlayer.setLooping(false);
         // 把视频画面输出到SurfaceView
         mMediaPlayer.setDisplay(mHolder);
         // 通过异步的方式装载媒体资源
@@ -229,7 +237,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
             public void onPrepared(MediaPlayer mp) {
                 Log.d("点击", "onPrepared: ");
                 //装载完毕回调
-                play();
+                play("pause");
             }
         });
 
@@ -237,12 +245,19 @@ public class MainActivity extends Activity implements View.OnClickListener{
         /**
          * 播放或者暂停
          */
-    private void play(){
+    private void play(String status){
         if (mMediaPlayer != null) {
-            if (mMediaPlayer.isPlaying()) {
+            if (mMediaPlayer.isPlaying()&&status.equals("pause")) {
                 mMediaPlayer.pause();
-//                mBtnPlay.setText("播放");
-            } else {
+            } else if(mMediaPlayer.isPlaying()&&status.equals("delete")){
+                mMediaPlayer.stop();
+                mMediaPlayer.reset();
+                mMediaPlayer.release();
+//                Canvas can = mHolder.lockCanvas();
+//                can.drawColor(Color.BLACK);      //覆盖之前的画布
+
+            }
+            else{
                 mMediaPlayer.start();
 //                mBtnPlay.setText("暂停");
             }
