@@ -82,8 +82,8 @@ public class FreeView extends RelativeLayout {
 
                     break;
                 case MotionEvent.ACTION_MOVE: // 滑动动作处理 记录离开屏幕时的 moveX  moveY 用于计算距离 和 判断滑动事件和点击事件 并作出响应
-                    final float moveX = event.getX() - downX;
-                    final float moveY = event.getY() - downY;
+                     float moveX = event.getX() - downX;
+                     float moveY = event.getY() - downY;
                     Log.d("坐标： ", "event.getX():------- "+event.getX());
                     Log.d("坐标： ", "event.getY():------- "+event.getY());
                     Log.d("坐标： ", "event.getRawX():------- "+event.getRawX());  //(坐android标系)
