@@ -1,4 +1,4 @@
-package com.example.yfz_screenrecorder;
+package com.yfz.main;
 
 import android.app.Service;
 import android.content.Intent;
@@ -17,6 +17,9 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
+import com.yfz.main.activity.MainActivity;
+import com.yfz.main.base.BaseApplication;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -25,7 +28,7 @@ public class ScreenRecordService extends Service {
     private MediaProjection mediaProjection;
     private MediaRecorder mediaRecorder;
     private VirtualDisplay virtualDisplay;
-    data data = (data) MainActivity.context;  //全局变量
+    com.yfz.main.base.BaseApplication BaseApplication = (BaseApplication) MainActivity.context;  //全局变量
     private DisplayMetrics dm= new DisplayMetrics();
     private boolean running;
     private int width = 720;
@@ -144,8 +147,8 @@ public class ScreenRecordService extends Service {
         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
         //设置视频储存地址
         videoPath = getSaveDirectory() + System.currentTimeMillis() + ".mp4";
-        data.setFull_file_Dir(videoPath);  //保存完整路径
-        data.setFile_name(System.currentTimeMillis() + ".mp4");//保存名字
+        BaseApplication.setFull_file_Dir(videoPath);  //保存完整路径
+        BaseApplication.setFile_name(System.currentTimeMillis() + ".mp4");//保存名字
 
         mediaRecorder.setOutputFile(videoPath);
         //设置视频大小

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/vClBaseLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/colorAccent"
+    android:padding="24dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="300dp">
+      <com.yfz.main.activity.splash.widget.SplashTextView
+          android:layout_weight="1"
+          app:setImgDrawable="@drawable/icon_camera"
+          app:setText="@string/splash_dialog_text_permission_camera"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content">
+      </com.yfz.main.activity.splash.widget.SplashTextView>
+        <com.yfz.main.activity.splash.widget.SplashTextView
+            android:layout_weight="1"
+            app:setImgDrawable="@drawable/icon_voice"
+            app:setText="@string/splash_dialog_text_permission_voice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </com.yfz.main.activity.splash.widget.SplashTextView>
+        <com.yfz.main.activity.splash.widget.SplashTextView
+            android:layout_weight="1"
+            app:setImgDrawable="@drawable/icon_storage"
+            app:setText="@string/splash_dialog_text_permission_storage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </com.yfz.main.activity.splash.widget.SplashTextView>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

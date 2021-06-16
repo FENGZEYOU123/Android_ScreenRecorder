@@ -1,4 +1,4 @@
-package com.example.yfz_screenrecorder;
+package com.yfz.main;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,10 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
+import com.yfz.main.activity.MainActivity;
+import com.yfz.main.base.BaseApplication;
 import java.io.File;
 import java.util.List;
 
@@ -21,16 +21,13 @@ import java.util.List;
  *
  **/
 public class MyRecyclerView extends RecyclerView.Adapter<MyRecyclerView.ViewHolder>{     //extends recyclerview.adapter
-    MainActivity MainActivity= new MainActivity();
-    data Data = (data) MainActivity.context;
-     private static String TAG= "MyRecyclerView:   ";
+    com.yfz.main.activity.MainActivity MainActivity= new MainActivity();
+    com.yfz.main.base.BaseApplication BaseApplication = (BaseApplication) MainActivity.context;
     Intent aaa=new Intent("update");
         private List My_mLIst;
-          MyRecyclerView(List list){
+          public MyRecyclerView(List list){
             My_mLIst=list;
         }
-
-
         //创建ViewHolder并返回，后续item布局里控件都是从ViewHolder中取出
         @NonNull
         @Override
@@ -85,11 +82,11 @@ public class MyRecyclerView extends RecyclerView.Adapter<MyRecyclerView.ViewHold
             }
             @Override
             public void onClick(View v) {
-            Log.e("MyRecyclerView", "play_button点击:   "+position+"    "    +Data.getRootDir()+My_mLIst.get(position));
+            Log.e("MyRecyclerView", "play_button点击:   "+position+"    "    + BaseApplication.getRootDir()+My_mLIst.get(position));
             MainActivity.surfaceView_layout.setVisibility(View.VISIBLE);
 
                 aaa.putExtra("update","play");
-                aaa.putExtra("play_file_name",Data.getRootDir()+My_mLIst.get(position));
+                aaa.putExtra("play_file_name", BaseApplication.getRootDir()+My_mLIst.get(position));
                 context.sendBroadcast(aaa);
              }
         }
@@ -106,7 +103,7 @@ public class MyRecyclerView extends RecyclerView.Adapter<MyRecyclerView.ViewHold
         }
         @Override
         public void onClick(View v) {
-            String file_path=Data.getRootDir()+My_mLIst.get(position);
+            String file_path= BaseApplication.getRootDir()+My_mLIst.get(position);
             Log.e("MyRecyclerView", "delete_button点击: "  +position+"    "+file_path);
             File file= new File(file_path);
             file.delete();
@@ -127,7 +124,6 @@ public class MyRecyclerView extends RecyclerView.Adapter<MyRecyclerView.ViewHold
             if(file.isDirectory()){ //判断是否是文件夹
                 File[] files = file.listFiles();//遍历文件夹里面的所有的
                 for(int i=0;i<files.length;i++){
-                    Log.e(TAG, "删除文件>>>>>> "+files[i].toString());
                     deleteFiles(files[i]); //删除
                 }
             }else{
@@ -136,7 +132,6 @@ public class MyRecyclerView extends RecyclerView.Adapter<MyRecyclerView.ViewHold
             System.gc();//系统回收垃圾
             return true;
         }catch (Exception e){
-            Log.e(TAG, "删除报错！！！: "+e.toString());
             return false;
 
         }

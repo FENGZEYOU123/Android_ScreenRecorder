@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ImageView
+        android:layout_weight="2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+    </ImageView>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+        <TextView
+            android:id="@+id/title_main"
+            android:text="录制屏幕"
+            app:layout_constraintTop_toTopOf="parent"
+            android:textColor="@color/colorBlack"
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </TextView>
+        <TextView
+            android:text="功能简洁快速"
+            app:layout_constraintTop_toBottomOf="@+id/title_main"
+            android:textColor="#A2A2A2"
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </TextView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

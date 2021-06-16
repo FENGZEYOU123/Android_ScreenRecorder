@@ -1,8 +1,6 @@
-package com.example.yfz_screenrecorder;
-
+package com.yfz.main.activity;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -11,13 +9,10 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Canvas;
-import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.projection.MediaProjection;
 import android.media.projection.MediaProjectionManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -38,14 +33,19 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.yfz.main.MyRecyclerView;
+import com.yfz.main.R;
+import com.yfz.main.ScreenRecordService;
+import com.yfz.main.base.BaseActivity;
+import com.yfz.main.base.BaseApplication;
+import com.yfz.main.scan_file;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends Activity implements View.OnClickListener{
+public class MainActivity extends BaseActivity implements View.OnClickListener{
 
     private Button button_1;
     private ScreenRecordService screenRecordService;
@@ -67,8 +67,8 @@ public class MainActivity extends Activity implements View.OnClickListener{
     public MyRecyclerView mAdapter;//适配器
     private LinearLayoutManager mLinearLayoutManager;//布局管理器
     public static  List mList;
-    private scan_file scan_file;
-    private data data;
+    private com.yfz.main.scan_file scan_file;
+    private com.yfz.main.base.BaseApplication BaseApplication;
     private File file;
     private RelativeLayout mParent;
 
@@ -114,11 +114,11 @@ public class MainActivity extends Activity implements View.OnClickListener{
 
 
     private void initData() {
-        data = (data) this.getApplicationContext();  //全局变量
+        BaseApplication = (BaseApplication) this.getApplicationContext();  //全局变量
         scan_file= new scan_file();
         String rootDir = Environment.getExternalStorageDirectory()
                 .getAbsolutePath() + "/" + "yfz_screenrecorder/";
-        data.setRootDir(rootDir);
+        BaseApplication.setRootDir(rootDir);
         file = new File(rootDir);
 
         metrics = new DisplayMetrics();
@@ -365,8 +365,8 @@ public class MainActivity extends Activity implements View.OnClickListener{
                 }else if (screenRecordService != null && screenRecordService.isRunning()) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                         if(screenRecordService.stopRecord()){  //如果保存成功的话
-                            scan_file.update_scanFIle(this,data.getFull_file_Dir());
-                            mList.add(data.getFile_name());
+                            scan_file.update_scanFIle(this, BaseApplication.getFull_file_Dir());
+                            mList.add(BaseApplication.getFile_name());
                             mAdapter.notifyDataSetChanged();
                         }
                     }

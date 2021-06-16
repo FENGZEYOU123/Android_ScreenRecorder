@@ -1,14 +1,22 @@
-package com.example.yfz_screenrecorder;
+package com.yfz.main.base;
 
 import android.app.Application;
 
-public class data extends Application {
+import com.yfz.main.GlobalConstant;
+
+public class BaseApplication extends Application {
+    private static BaseApplication mInstance;
     @Override
     public void onCreate() {
-        // TODO Auto-generated method stub
         super.onCreate();
+        mInstance = this;
+        GlobalConstant.initDeviceInfo(this);
+
     }
 
+    public static BaseApplication getInstance(){
+        return mInstance;
+    }
     /**
      * 保存录像文件的-----根目录
      **/

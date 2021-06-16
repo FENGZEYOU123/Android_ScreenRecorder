@@ -1,17 +1,17 @@
-package com.example.yfz_screenrecorder;
+package com.yfz.main;
 
 import android.content.Context;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Environment;
 import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
+import com.yfz.main.activity.MainActivity;
+
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class scan_file extends MainActivity {
 

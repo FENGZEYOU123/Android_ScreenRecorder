@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">yfz_screenRecorder</string>
+
+    <string name="splash_dialog_text_permission_camera">照相机权限未获取</string>
+    <string name="splash_dialog_text_permission_voice">麦克风权限未获取</string>
+    <string name="splash_dialog_text_permission_storage">储存权限未获取</string>
+
 </resources>
